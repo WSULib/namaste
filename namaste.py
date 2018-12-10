@@ -5,15 +5,15 @@ import glob
 import re
 
 def main():
-    import optparse    
+    import optparse
     parser = optparse.OptionParser("Usage: %prog [options] <cmd> [<value>]")
-    parser.add_option("-d", dest="directory", default=os.getcwd(), 
+    parser.add_option("-d", dest="directory", default=os.getcwd(),
                       help="directory")
     options, args = parser.parse_args()
-    
+
     if len(args) == 0:
         parser.print_help()
-        return 
+        return
 
     d = options.directory
     cmd = args[0]
@@ -37,7 +37,7 @@ def main():
         get(d)
     elif cmd == 'gettypes':
         get_types(d)
-    else: 
+    else:
         print("unknown command: %s" % cmd)
 
 def dirtype(d, value, verbose=True):
@@ -48,7 +48,7 @@ def dirtype(d, value, verbose=True):
 
 def who(d, value, verbose=True):
     namaste = _set_namaste(d, 1, value)
-    if verbose: 
+    if verbose:
         print("created namaste %s" % namaste)
     return namaste
 
@@ -77,13 +77,13 @@ def get(d, verbose=True):
     if tags and verbose:
         print("namastes: %s" % ", ".join(tags))
     return tags
-    
+
 def get_types(d, verbose=True):
     type_tags = _get_namaste(d, 0)
     types = {}
     if type_tags:
         p = re.compile(r"""0=
-                       (?P<name>[^_]+)_
+                       (?P<name>.+)_
                        (?P<major>\d+)\.
                        (?P<minor>\d+)""", re.VERBOSE)
         for t in type_tags:
@@ -105,7 +105,7 @@ def _set_namaste(d, tag, value):
         f.write(value)
         f.write("\n")
     return namaste
-    
+
 def _get_namaste(d, tag):
     if not os.path.isdir(d):
         raise Exception("directory %s does not exist" % d)
