@@ -1,8 +1,12 @@
 
+import logging
 import os
 import glob
-
 import re
+
+# setup logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.ERROR)
 
 def main():
     import optparse
@@ -38,36 +42,36 @@ def main():
     elif cmd == 'gettypes':
         get_types(d)
     else:
-        print("unknown command: %s" % cmd)
+        logger.debug("unknown command: %s" % cmd)
 
 def dirtype(d, value, verbose=True):
     namaste =  _set_namaste(d, 0, value)
     if verbose:
-        print("created namaste %s" % namaste)
+        logger.debug("created namaste %s" % namaste)
     return namaste
 
 def who(d, value, verbose=True):
     namaste = _set_namaste(d, 1, value)
     if verbose:
-        print("created namaste %s" % namaste)
+        logger.debug("created namaste %s" % namaste)
     return namaste
 
 def what(d, value, verbose=True):
     namaste = _set_namaste(d, 2, value)
     if verbose:
-        print("created namaste %s" % namaste)
+        logger.debug("created namaste %s" % namaste)
     return namaste
 
 def when(d, value, verbose=True):
     namaste = _set_namaste(d, 3, value)
     if verbose:
-        print("created namaste %s" % namaste)
+        logger.debug("created namaste %s" % namaste)
     return namaste
 
 def where(d, value, verbose=True):
     namaste = _set_namaste(d, 4, value)
     if verbose:
-        print("created namaste %s" % namaste)
+        logger.debug("created namaste %s" % namaste)
     return namaste
 
 def get(d, verbose=True):
@@ -75,7 +79,7 @@ def get(d, verbose=True):
     for namaste in glob.iglob(os.path.join(d, "[0-4]=*")):
         tags.append(namaste)
     if tags and verbose:
-        print("namastes: %s" % ", ".join(tags))
+        logger.debug("namastes: %s" % ", ".join(tags))
     return tags
 
 def get_types(d, verbose=True):
@@ -91,7 +95,7 @@ def get_types(d, verbose=True):
             if m != None:
                 g = m.groupdict()
                 if verbose:
-                    print("namaste - directory type %(name)s - version %(major)s.%(minor)s" % (g))
+                    logger.debug("namaste - directory type %(name)s - version %(major)s.%(minor)s" % (g))
                 types[g['name']] = g
     return types
 
